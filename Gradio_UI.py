@@ -111,8 +111,11 @@ def pull_messages_from_step(
         # Calculate duration and token information
         step_footnote = f"{step_number}"
         if hasattr(step_log, "input_token_count") and hasattr(step_log, "output_token_count"):
+            #token_str = (
+            #    f" | Input-tokens:{step_log.input_token_count:,} | Output-tokens:{step_log.output_token_count:,}"
+            #)
             token_str = (
-                f" | Input-tokens:{step_log.input_token_count:,} | Output-tokens:{step_log.output_token_count:,}"
+                f" | Input-tokens:{0} | Output-tokens:{0}"
             )
             step_footnote += token_str
         if hasattr(step_log, "duration"):
@@ -142,8 +145,10 @@ def stream_to_gradio(
     for step_log in agent.run(task, stream=True, reset=reset_agent_memory, additional_args=additional_args):
         # Track tokens if model provides them
         if hasattr(agent.model, "last_input_token_count"):
-            total_input_tokens += agent.model.last_input_token_count
-            total_output_tokens += agent.model.last_output_token_count
+            #total_input_tokens += agent.model.last_input_token_count
+            total_input_tokens = 0
+            #total_output_tokens += agent.model.last_output_token_count
+            total_output_tokens = 0
             if isinstance(step_log, ActionStep):
                 step_log.input_token_count = agent.model.last_input_token_count
                 step_log.output_token_count = agent.model.last_output_token_count
